@@ -4,6 +4,8 @@ import base.BaseTest;
 import org.junit.jupiter.api.Test;
 import pages.InventoryPage;
 import pages.LoginPage;
+import utils.ErrorMessages;
+import utils.TestUsers;
 
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,7 +16,7 @@ public class LoginTests extends BaseTest {
     void successfulLoginTest() {
         step("Открываем страницу логина и вводим валидные данные пользователя", () -> {
             LoginPage loginPage = new LoginPage(driver);
-            loginPage.login("standard_user", "secret_sauce");
+            loginPage.login(TestUsers.STANDARD_USER, TestUsers.PASSWORD);
         });
 
         step("Проверяем, что пользователь успешно авторизован и открыта страница товаров", () -> {
@@ -28,12 +30,12 @@ public class LoginTests extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
 
         step("Вводим валидный логин и невалидный пароль", () -> {
-            loginPage.login("standard_user", "wrong_password");
+            loginPage.login(TestUsers.STANDARD_USER, "wrong_password");
         });
 
         step("Проверяем отображение ошибки о неверных учетных данных", () -> {
             assertTrue(loginPage.getErrorMessage()
-                    .contains("Username and password do not match"));
+                    .contains(ErrorMessages.INVALID_CREDENTIALS));
         });
     }
 
@@ -42,11 +44,11 @@ public class LoginTests extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
 
         step("Пытаемся войти под заблокированным пользователем", () -> {
-            loginPage.login("locked_out_user", "secret_sauce");
+            loginPage.login(TestUsers.LOCKED_USER, TestUsers.PASSWORD);
         });
 
         step("Проверяем сообщение о блокировке пользователя", () -> {
-            assertTrue(loginPage.getErrorMessage().contains("locked out"));
+            assertTrue(loginPage.getErrorMessage().contains(ErrorMessages.LOCKED_USER));
         });
     }
 
@@ -59,7 +61,7 @@ public class LoginTests extends BaseTest {
         });
 
         step("Проверяем сообщение об обязательности заполнения логина", () -> {
-            assertTrue(loginPage.getErrorMessage().contains("Username is required"));
+            assertTrue(loginPage.getErrorMessage().contains(ErrorMessages.USERNAME_REQUIRED));
         });
     }
 
@@ -68,7 +70,7 @@ public class LoginTests extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
 
         step("Авторизуемся пользователем с возможными задержками загрузки", () -> {
-            loginPage.login("performance_glitch_user", "secret_sauce");
+            loginPage.login(TestUsers.PERFORMANCE_USER, TestUsers.PASSWORD);
         });
 
         step("Ожидаем успешную загрузку страницы товаров", () -> {
