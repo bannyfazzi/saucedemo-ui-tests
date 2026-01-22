@@ -4,6 +4,7 @@ import base.BaseTest;
 import org.junit.jupiter.api.Test;
 import pages.InventoryPage;
 import pages.LoginPage;
+import utils.ErrorMessages;
 import utils.TestUsers;
 
 import static io.qameta.allure.Allure.step;
@@ -34,7 +35,7 @@ public class LoginTests extends BaseTest {
 
         step("Проверяем отображение ошибки о неверных учетных данных", () -> {
             assertTrue(loginPage.getErrorMessage()
-                    .contains("Username and password do not match"));
+                    .contains(ErrorMessages.INVALID_CREDENTIALS));
         });
     }
 
@@ -47,7 +48,7 @@ public class LoginTests extends BaseTest {
         });
 
         step("Проверяем сообщение о блокировке пользователя", () -> {
-            assertTrue(loginPage.getErrorMessage().contains("locked out"));
+            assertTrue(loginPage.getErrorMessage().contains(ErrorMessages.LOCKED_USER));
         });
     }
 
@@ -60,7 +61,7 @@ public class LoginTests extends BaseTest {
         });
 
         step("Проверяем сообщение об обязательности заполнения логина", () -> {
-            assertTrue(loginPage.getErrorMessage().contains("Username is required"));
+            assertTrue(loginPage.getErrorMessage().contains(ErrorMessages.USERNAME_REQUIRED));
         });
     }
 
