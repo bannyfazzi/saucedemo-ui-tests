@@ -37,3 +37,16 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# IDE
+.idea/
+
+# Maven
+target/
+
+# Allure
+allure-results/
+.allure/
+
+# OS
+.DS_Store
